@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Forward Chaining - Diagnosa Kerusakan Komputer</h2>
+
+<form method="POST" class="mt-4">
+  <label class="form-label fw-bold mb-3">Pilih gejala yang dialami:</label>
+  <div class="row" style="max-height: 400px; overflow-y: auto;">
+    {% for kode, desc in gejala.items() %}
+      <div class="col-md-6 col-lg-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="{{ kode }}" name="{{ kode }}">
+          <label class="form-check-label" for="{{ kode }}">{{ desc }}</label>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <button type="submit" class="btn btn-primary mt-3">Diagnosa</button>
+</form>
+
+{% if hasil %}
+  <div class="alert alert-info mt-4">
+    <h5>Hasil Diagnosa:</h5>
+    <ul>
+      {% for item in hasil %}
+        <li>{{ item.nama }}: {{ item.cf }}%</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+{% endblock %}

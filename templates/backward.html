@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Backward Chaining - Diagnosa Kerusakan Komputer</h2>
+
+<form method="POST" class="mt-4">
+  <div class="mb-3">
+    <label for="kerusakan" class="form-label fw-bold">Pilih Kerusakan yang Diduga</label>
+    <select class="form-select" id="kerusakan" name="kerusakan" onchange="this.form.submit()" required>
+      <option value="" disabled selected>-- Pilih Kerusakan --</option>
+      {% for kode, nama in kerusakan.items() %}
+        <option value="{{ kode }}" {% if kode == selected %}selected{% endif %}>{{ nama }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  {% if selected %}
+    <div class="mb-3">
+      <label class="form-label fw-bold">Pilih gejala yang sesuai:</label>
+      {% set aturan = rules_cf.get(selected, []) %}
+      {% for g, cf in aturan %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="{{ g }}" name="{{ g }}" />
+          <label class="form-check-label" for="{{ g }}">{{ gejala[g] }}</label>
+        </div>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-success">Cek Diagnosa</button>
+  {% endif %}
+</form>
+
+{% if hasil %}
+  <div class="alert mt-4 {% if '✅' in hasil %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+    {{ hasil }}
+  </div>
+{% endif %}
+
+{% endblock %}
